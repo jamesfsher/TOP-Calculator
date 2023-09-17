@@ -32,6 +32,10 @@ function operate(a, b, operator) {
     }
 }
 
+function updateMain(num1, num2) {
+
+}
+
 let num1;
 let num2;
 let operator;
