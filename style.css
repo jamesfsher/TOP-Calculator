@@ -2,10 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-style: solid;
-    border-width: 1px;
-    /* width: 250px; */
-    padding: 10px;
+    height: 100vh;
 }
 
 .grid-container {
