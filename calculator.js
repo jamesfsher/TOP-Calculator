@@ -14,6 +14,12 @@ function divide(a, b) {
     return a / b;
 }
 
+let num1;
+let num2;
+let operator;
+let displayValue;
+
+
 function operate(a, b, operator) {
     if (operator == 'add') {
         return add(a, b);
@@ -34,20 +40,25 @@ function operate(a, b, operator) {
 
 
 function updateMain(event) {
-    console.log(event);
+    if (!operator) {
+        if (!num1) {
+            num1 = event.value
+        }
+        else {
+            num1 += event.value;
+        }
+        console.log(num1);
+
+    }
 }
 
-const numbers = document.querySelectorAll('.btn.number');
-numbers.forEach(function (number) {
-    number.addEventListener('click', function () { 
-        updateMain(number);
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+        updateMain(button);
     });
 });
 
-let num1;
-let num2;
-let operator;
-let displayValue;
 
 
 
