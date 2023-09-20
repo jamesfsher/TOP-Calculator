@@ -40,22 +40,25 @@ function operate(a, b, operator) {
 
 
 function updateMain(event) {
-    if (!operator) {
-        if (!num1) {
-            num1 = event.value
+    console.log(event.target.classList.value);
+    if (event.target.classList.value == "btn number") {
+        if (!operator) {
+            if (!num1) {
+                num1 = event.target.value
+            }
+            else {
+                num1 += event.target.value;
+            }
         }
-        else {
-            num1 += event.value;
-        }
-        console.log(num1);
-
     }
+
+    document.querySelector("#main-display-text").innerHTML = `${num1}`
 }
 
 const buttons = document.querySelectorAll('.btn');
 buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-        updateMain(button);
+    button.addEventListener('click', function (e) {
+        updateMain(e);
     });
 });
 

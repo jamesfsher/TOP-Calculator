@@ -34,7 +34,7 @@
     height: 30px;
 }
 
-.main-display-text {
+#main-display-text {
     position: absolute;
     bottom: 0;
     right: 0;
