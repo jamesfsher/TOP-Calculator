@@ -1,25 +1,30 @@
+// Add function
 function add(a, b) {
     return a + b;
 }
 
+// Subtract function
 function subtract(a, b) {
     return a - b;
 }
 
+// Multiplication function
 function multiply(a, b) {
     return a * b;
 }
 
+// Division function
 function divide(a, b) {
     return a / b;
 }
 
+// Declaration of variables
 let num1;
 let num2;
 let operator;
 let displayValue;
 
-
+// Operate function which takes user input values and executes operation
 function operate(a, b, operator) {
     if (operator == 'add') {
         return add(a, b);
@@ -38,7 +43,7 @@ function operate(a, b, operator) {
     }
 }
 
-
+// Updates the main display and stores the user input values of num1, num2, and operator
 function updateMain(event) {
     console.log(event.target.classList.value);
     if (event.target.classList.value == "btn number") {
@@ -49,10 +54,27 @@ function updateMain(event) {
             else {
                 num1 += event.target.value;
             }
+            displayValue = num1;
+        }
+        else {
+            if (!num2) {
+                num2 = event.target.value
+            }
+            else {
+                num2 += event.target.value;
+            }
+            displayValue = `${num1} ${operator} ${num2}`
         }
     }
+    if (event.target.classList.value == "btn operator") {
+        if (num1) {
+            operator = event.target.value
+        }
+        displayValue = num1 + " " + operator;
+    }
 
-    document.querySelector("#main-display-text").innerHTML = `${num1}`
+
+    document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
 const buttons = document.querySelectorAll('.btn');
@@ -75,8 +97,4 @@ buttons.forEach(function (button) {
 // the result of the previously operation should be moved to small display
 // the result of the past operation should then be stored as initial number
 // if user starts typing numbers, then stored past value is overwritten
-
-
-// Structure of passing variables with buttons
-// each button needs an event listener
 
