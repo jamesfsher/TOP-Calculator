@@ -45,7 +45,6 @@ function operate(a, b, operator) {
 
 // Updates the main display and stores the user input values of num1, num2, and operator
 function updateMain(event) {
-    console.log(event.target.classList.value);
     if (event.target.classList.value == "btn number") {
         if (!operator) {
             if (!num1) {
@@ -67,10 +66,19 @@ function updateMain(event) {
         }
     }
     if (event.target.classList.value == "btn operator") {
-        if (num1) {
-            operator = event.target.value
+        if (event.target.value == "clear") {
+            num1 = null;
+            num2 = null;
+            operator = null;
+            displayValue = '';
         }
-        displayValue = num1 + " " + operator;
+        else if (event.target.value == "delete") {
+            displayValue = displayValue.slice(0, -1);
+        }
+        else if (num1) {
+            operator = event.target.value
+            displayValue = num1 + " " + operator;
+        }
     }
 
 
