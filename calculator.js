@@ -26,16 +26,16 @@ let displayValue;
 
 // Operate function which takes user input values and executes operation
 function operate(a, b, operator) {
-    if (operator == 'add') {
+    if (operator == '+') {
         return add(a, b);
     }
-    else if (operator == 'subtract') {
+    else if (operator == '-') {
         return subtract(a, b);
     }
-    else if (operator == 'multiply') {
+    else if (operator == '*') {
         return multiply(a, b);
     }
-    else if (operator == 'divide') {
+    else if (operator == '/') {
         return multiply(a, b);
     }
     else {
@@ -76,8 +76,17 @@ function updateMain(event) {
             displayValue = displayValue.slice(0, -1);
         }
         else if (num1) {
-            operator = event.target.value
-            displayValue = num1 + " " + operator;
+            if (num2) {
+                console.log(num1, num2, operator);
+                if (operator == "+" || operator == "-" || operator == "/" || operator == "*") {
+                    let result = operate(num1, num2, operator);
+                    displayValue = result;
+                }
+            }
+            else {
+                operator = event.target.value
+                displayValue = num1 + " " + operator;
+            }
         }
     }
 
