@@ -23,24 +23,31 @@ let num1;
 let num2;
 let operator;
 let displayValue;
+let smallDisplay;
 
 // Operate function which takes user input values and executes operation
 function operate(a, b, operator) {
+    let result;
     if (operator == '+') {
-        return add(a, b);
+        result = add(a, b);
     }
     else if (operator == '-') {
-        return subtract(a, b);
+         result = subtract(a, b);
     }
     else if (operator == '*') {
-        return multiply(a, b);
+        result =  multiply(a, b);
     }
     else if (operator == '/') {
-        return multiply(a, b);
+        result =  multiply(a, b);
     }
     else {
         return "Operator not found";
     }
+    smallDisplay = `${num1} ${operator} ${num2} = ${result}`
+    document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
+
+    num1 = result;
+    return result;
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
