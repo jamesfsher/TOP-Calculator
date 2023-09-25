@@ -55,17 +55,14 @@ function operate(a, b, operator) {
 }
 
 // function to update the small display box
-function updateSmallDisplay(num1, num2, operator) {
+function updateSmallDisplay() {
     smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
     document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
     // make way to limit num of characters
 }
 
 function updateDisplay() {
-    if (result) {
-        displayValue = result;
-    }
-    else if (num1) {
+    if (num1) {
         displayValue = `${num1}`;
         if (operator) {
             displayValue = `${num1} ${operator}`;
@@ -74,6 +71,7 @@ function updateDisplay() {
             }
         }
     }
+    document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
@@ -89,7 +87,7 @@ function updateMain(event) {
             else {
                 num1 += event.target.value;
             }
-            updateDisplay();
+            // updateDisplay();
         }
         else {
             if (!num2) {
@@ -98,7 +96,7 @@ function updateMain(event) {
             else {
                 num2 += event.target.value;
             }
-            updateDisplay();
+            // updateDisplay();
         }
     }
     if (event.target.classList.value == "btn execute") {
@@ -117,22 +115,22 @@ function updateMain(event) {
         if (num1) {
             if (num2) {
                 if (operator == "+" || operator == "-" || operator == "/" || operator == "*") {
-                    let result = operate(num1, num2, operator);
-                    displayValue = result;
-                    num1 = result;
+                    displayValue = operate(num1, num2, operator);
+                    num1 = displayValue;
                     num2 = null;
                     operator = null;
                 }
             }
             else {
                 operator = event.target.value
-                updateDisplay();
+                // updateDisplay();
             }
         }
     }
 
-
-    document.querySelector("#main-display-text").innerHTML = `${displayValue}`
+    updateDisplay();
+    updateSmallDisplay();
+    // document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
 
