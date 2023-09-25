@@ -77,6 +77,9 @@ function updateDisplay() {
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
+// NOTE - need up update if statements from truthy to something else
+    // 0 wont work with num1 or num2 since it is technically falsy
+    // maybe and || val == 0?
 function updateMain(event) {
     if (event.target.classList.value == "btn number") {
         if (!operator) {
@@ -145,4 +148,3 @@ function updateMain(event) {
 // the result of the previously operation should be moved to small display
 // the result of the past operation should then be stored as initial number
 // if user starts typing numbers, then stored past value is overwritten
-
