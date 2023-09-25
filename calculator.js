@@ -24,30 +24,56 @@ let num2;
 let operator;
 let displayValue;
 let smallDisplay;
+let result;
+
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(function (button) {
+    button.addEventListener('click', function (e) {
+        updateMain(e);
+    });
+});
 
 // Operate function which takes user input values and executes operation
 function operate(a, b, operator) {
-    let result;
     if (operator == '+') {
         result = add(a, b);
     }
     else if (operator == '-') {
-         result = subtract(a, b);
+        result = subtract(a, b);
     }
     else if (operator == '*') {
-        result =  multiply(a, b);
+        result = multiply(a, b);
     }
     else if (operator == '/') {
-        result =  multiply(a, b);
+        result = multiply(a, b);
     }
     else {
         return "Operator not found";
     }
-    smallDisplay = `${num1} ${operator} ${num2} = ${result}`
-    document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
-
     num1 = result;
     return result;
+}
+
+// function to update the small display box
+function updateSmallDisplay(num1, num2, operator) {
+    smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
+    document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
+    // make way to limit num of characters
+}
+
+function updateDisplay() {
+    if (result) {
+        displayValue = result;
+    }
+    else if (num1) {
+        displayValue = `${num1}`;
+        if (operator) {
+            displayValue = `${num1} ${operator}`;
+            if (num2) {
+                displayValue = `${num1} ${operator} ${num2}`;
+            }
+        }
+    }
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
@@ -60,7 +86,7 @@ function updateMain(event) {
             else {
                 num1 += event.target.value;
             }
-            displayValue = num1;
+            updateDisplay();
         }
         else {
             if (!num2) {
@@ -69,30 +95,35 @@ function updateMain(event) {
             else {
                 num2 += event.target.value;
             }
-            displayValue = `${num1} ${operator} ${num2}`
+            updateDisplay();
         }
     }
-    if (event.target.classList.value == "btn operator") {
+    if (event.target.classList.value == "btn execute") {
         if (event.target.value == "clear") {
             num1 = null;
             num2 = null;
             operator = null;
             displayValue = '';
+            smallDisplay = '';
         }
         else if (event.target.value == "delete") {
             displayValue = displayValue.slice(0, -1);
         }
-        else if (num1) {
+    }
+    if (event.target.classList.value == "btn operator") {
+        if (num1) {
             if (num2) {
-                console.log(num1, num2, operator);
                 if (operator == "+" || operator == "-" || operator == "/" || operator == "*") {
                     let result = operate(num1, num2, operator);
                     displayValue = result;
+                    num1 = result;
+                    num2 = null;
+                    operator = null;
                 }
             }
             else {
                 operator = event.target.value
-                displayValue = num1 + " " + operator;
+                updateDisplay();
             }
         }
     }
@@ -100,13 +131,6 @@ function updateMain(event) {
 
     document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
-
-const buttons = document.querySelectorAll('.btn');
-buttons.forEach(function (button) {
-    button.addEventListener('click', function (e) {
-        updateMain(e);
-    });
-});
 
 
 

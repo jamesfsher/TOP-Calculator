@@ -27,6 +27,7 @@
 .top-display {
     height: 20px;
     text-align: left;
+    font-size: .75rem;
 }
 
 .main-display {
