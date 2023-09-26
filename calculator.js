@@ -1,21 +1,21 @@
 // Add function
 function add(a, b) {
-    return a + b;
+    return parseFloat(a) + parseFloat(b);
 }
 
 // Subtract function
 function subtract(a, b) {
-    return a - b;
+    return parseFloat(a) - parseFloat(b);
 }
 
 // Multiplication function
 function multiply(a, b) {
-    return a * b;
+    return parseFloat(a) * parseFloat(b);
 }
 
 // Division function
 function divide(a, b) {
-    return a / b;
+    return parseFloat(a) / parseFloat(b);
 }
 
 // Declaration of variables
@@ -45,7 +45,7 @@ function operate(a, b, operator) {
         result = multiply(a, b);
     }
     else if (operator == '/') {
-        result = multiply(a, b);
+        result = divide(a, b);
     }
     else {
         return "Operator not found";
@@ -62,7 +62,10 @@ function updateSmallDisplay() {
 }
 
 function updateDisplay() {
-    if (num1) {
+    if (result) {
+        displayValue = result;
+    }
+    else if (num1) {
         displayValue = `${num1}`;
         if (operator) {
             displayValue = `${num1} ${operator}`;
@@ -70,6 +73,9 @@ function updateDisplay() {
                 displayValue = `${num1} ${operator} ${num2}`;
             }
         }
+    }
+    else {
+        displayValue = '';
     }
     document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
@@ -79,15 +85,16 @@ function updateDisplay() {
     // 0 wont work with num1 or num2 since it is technically falsy
     // maybe and || val == 0?
 function updateMain(event) {
+    console.log(event.target.value);
     if (event.target.classList.value == "btn number") {
         if (!operator) {
-            if (!num1) {
+            if (!num1 || result) {
                 num1 = event.target.value
+                result = null;
             }
             else {
                 num1 += event.target.value;
             }
-            // updateDisplay();
         }
         else {
             if (!num2) {
@@ -96,7 +103,6 @@ function updateMain(event) {
             else {
                 num2 += event.target.value;
             }
-            // updateDisplay();
         }
     }
     if (event.target.classList.value == "btn execute") {
@@ -104,26 +110,41 @@ function updateMain(event) {
             num1 = null;
             num2 = null;
             operator = null;
+            result = null;
             displayValue = '';
             smallDisplay = '';
         }
         else if (event.target.value == "delete") {
-            displayValue = displayValue.slice(0, -1);
+            console.log("here");
+            if (num2) {
+                num2 = num2.slice(0, -1);
+            }
+            else if (operator) {
+                operator = null;
+            }
+            else if (num1) {
+                num1 = num1.slice(0, -1);
+            }
+            else {
+                num1 = null;
+                num2 = null;
+                operator = null;
+            }
         }
     }
     if (event.target.classList.value == "btn operator") {
         if (num1) {
             if (num2) {
                 if (operator == "+" || operator == "-" || operator == "/" || operator == "*") {
-                    displayValue = operate(num1, num2, operator);
-                    num1 = displayValue;
+                    result = operate(num1, num2, operator);
+                    num1 = result;
                     num2 = null;
                     operator = null;
+                    result = null;
                 }
             }
             else {
                 operator = event.target.value
-                // updateDisplay();
             }
         }
     }
