@@ -123,7 +123,7 @@ function updateMain(event) {
                 operator = null;
             }
             else if (num1) {
-                num1 = num1.slice(0, -1);
+                num1 = num1.toString().slice(0, -1);
             }
             else {
                 num1 = null;
@@ -139,12 +139,20 @@ function updateMain(event) {
                     result = operate(num1, num2, operator);
                     num1 = result;
                     num2 = null;
-                    operator = null;
                     result = null;
+                }
+                else if (operator == "=") {
+                    result = operate(num1, num2, operator);
+                    num1 = result;
+                    num2 = null;
+                    result = null;
+                    operator = null;
                 }
             }
             else {
-                operator = event.target.value
+                if (operator != "=") {
+                    operator = event.target.value
+                }
             }
         }
     }
