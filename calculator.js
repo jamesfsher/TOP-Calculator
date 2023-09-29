@@ -25,6 +25,7 @@ let operator;
 let displayValue;
 let smallDisplay;
 let result;
+let carryOver = 0;
 
 const buttons = document.querySelectorAll('.btn');
 buttons.forEach(function (button) {
@@ -51,6 +52,7 @@ function operate(a, b, operator) {
         return "Operator not found";
     }
     num1 = result;
+    carryOver = 1;
     return result;
 }
 
@@ -85,11 +87,12 @@ function updateDisplay() {
     // 0 wont work with num1 or num2 since it is technically falsy
     // maybe and || val == 0?
 function updateMain(event) {
-    console.log(event.target.value);
+    console.log(event.target);
     if (event.target.classList.value == "btn number") {
         if (!operator) {
-            if (!num1 || result) {
-                num1 = event.target.value
+            if (!num1 || carryOver == 1) {
+                carryOver = 0;
+                num1 = event.target.value;
                 result = null;
             }
             else {
@@ -115,7 +118,6 @@ function updateMain(event) {
             smallDisplay = '';
         }
         else if (event.target.value == "delete") {
-            console.log("here");
             if (num2) {
                 num2 = num2.slice(0, -1);
             }
@@ -133,15 +135,18 @@ function updateMain(event) {
         }
     }
     if (event.target.classList.value == "btn operator") {
+        let selectedOperator = event.target.value;
+        console.log(selectedOperator);
         if (num1) {
             if (num2) {
-                if (operator == "+" || operator == "-" || operator == "/" || operator == "*") {
+                if (selectedOperator == "+" || selectedOperator == "-" || selectedOperator == "/" || selectedOperator == "*") {
                     result = operate(num1, num2, operator);
                     num1 = result;
                     num2 = null;
                     result = null;
                 }
-                else if (operator == "=") {
+                else if (selectedOperator == "equals") {
+                    console.log("sent with equal");
                     result = operate(num1, num2, operator);
                     num1 = result;
                     num2 = null;
@@ -150,8 +155,9 @@ function updateMain(event) {
                 }
             }
             else {
-                if (operator != "=") {
-                    operator = event.target.value
+                if (selectedOperator != "equals") {
+                    console.log("regular operator");
+                    operator = selectedOperator;
                 }
             }
         }
