@@ -22,11 +22,16 @@ function divide(a, b) {
 let num1;
 let num2;
 let operator;
+// Main display value
 let displayValue;
+// Small display value
 let smallDisplay;
+// Calculated result
 let result;
+// carryOver designates that num1 is stored from previous operation. 0 representing no carry over, 1 representing carry over
 let carryOver = 0;
 
+// Add event listener to all buttons, passing the event information
 const buttons = document.querySelectorAll('.btn');
 buttons.forEach(function (button) {
     button.addEventListener('click', function (e) {
@@ -51,6 +56,7 @@ function operate(a, b, operator) {
     else {
         return "Operator not found";
     }
+    // Allow result to be stored as num1 for future calculations
     num1 = result;
     carryOver = 1;
     return result;
@@ -60,9 +66,11 @@ function operate(a, b, operator) {
 function updateSmallDisplay() {
     smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
     document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
-    // make way to limit num of characters
+    // make way to limit num of characters?
+        // use flexbox instead
 }
 
+// Updates main display, reading through non null values
 function updateDisplay() {
     if (result) {
         displayValue = result;
@@ -82,12 +90,22 @@ function updateDisplay() {
     document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
-// Updates the main display and stores the user input values of num1, num2, and operator
+function clearAll() {
+    num1 = null;
+    num2 = null;
+    operator = null;
+    result = null;
+    displayValue = '';
+    smallDisplay = '';
+}
+
 // NOTE - need up update if statements from truthy to something else
     // 0 wont work with num1 or num2 since it is technically falsy
     // maybe and || val == 0?
+
+// Updates the main display and stores the user input values of num1, num2, and operator
 function updateMain(event) {
-    console.log(event.target);
+    // If button is a number
     if (event.target.classList.value == "btn number") {
         if (!operator) {
             if (!num1 || carryOver == 1) {
@@ -108,14 +126,10 @@ function updateMain(event) {
             }
         }
     }
+    // If button is an executer (clear or delete)
     if (event.target.classList.value == "btn execute") {
         if (event.target.value == "clear") {
-            num1 = null;
-            num2 = null;
-            operator = null;
-            result = null;
-            displayValue = '';
-            smallDisplay = '';
+            clearAll();
         }
         else if (event.target.value == "delete") {
             if (num2) {
@@ -134,6 +148,7 @@ function updateMain(event) {
             }
         }
     }
+    // If button is an operator (PEMDAS)
     if (event.target.classList.value == "btn operator") {
         let selectedOperator = event.target.value;
         console.log(selectedOperator);
@@ -162,10 +177,9 @@ function updateMain(event) {
             }
         }
     }
-
+    // Call function to update the main and small displays, called every time a button is clicked
     updateDisplay();
     updateSmallDisplay();
-    // document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
 
@@ -181,3 +195,6 @@ function updateMain(event) {
 // the result of the previously operation should be moved to small display
 // the result of the past operation should then be stored as initial number
 // if user starts typing numbers, then stored past value is overwritten
+
+// General notes
+// make all fonts bigger
