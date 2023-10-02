@@ -28,8 +28,8 @@ let displayValue;
 let smallDisplay;
 // Calculated result
 let result;
-// carryOver designates that num1 is stored from previous operation. 0 representing no carry over, 1 representing carry over
-let carryOver = 0;
+// currentState designates that num1 is stored from previous operation. inital representing no past result, carryOver representing result caried over from past operation
+let currentState = "initial";
 
 // Add event listener to all buttons, passing the event information
 const buttons = document.querySelectorAll('.btn');
@@ -58,7 +58,7 @@ function operate(a, b, operator) {
     }
     // Allow result to be stored as num1 for future calculations
     num1 = result;
-    carryOver = 1;
+    currentState = "carryOver";
     return result;
 }
 
@@ -102,14 +102,15 @@ function clearAll() {
 // NOTE - need up update if statements from truthy to something else
     // 0 wont work with num1 or num2 since it is technically falsy
     // maybe and || val == 0?
+    
 
 // Updates the main display and stores the user input values of num1, num2, and operator
 function updateMain(event) {
     // If button is a number
     if (event.target.classList.value == "btn number") {
         if (!operator) {
-            if (!num1 || carryOver == 1) {
-                carryOver = 0;
+            if (!num1 || currentState == "carryOver") {
+                currentState = "initial";
                 num1 = event.target.value;
                 result = null;
             }
