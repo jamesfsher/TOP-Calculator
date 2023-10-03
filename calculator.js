@@ -19,17 +19,20 @@ function divide(a, b) {
 }
 
 // Declaration of variables
-let num1;
-let num2;
-let operator;
+let num1 = ""
+let num2 = ""
+let operator = ""
 // Main display value
-let displayValue;
+let displayValue = ""
 // Small display value
-let smallDisplay;
+let smallDisplay = ""
 // Calculated result
-let result;
+let result = ""
 // currentState designates that num1 is stored from previous operation. inital representing no past result, carryOver representing result caried over from past operation
 let currentState = "initial";
+// Detects if decimal has already been selected
+let num1Decimal = "no";
+let num2Decimal = "no";
 
 // Add event listener to all buttons, passing the event information
 const buttons = document.querySelectorAll('.btn');
@@ -67,85 +70,82 @@ function updateSmallDisplay() {
     smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
     document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
     // make way to limit num of characters?
-        // use flexbox instead
+    // use flexbox instead
 }
 
 // Updates main display, reading through non null values
 function updateDisplay() {
     if (result) {
-        displayValue = result;
+        displayValue = result.toString();
     }
-    else if (num1) {
-        displayValue = `${num1}`;
+    else {
+        displayValue = num1 || "0";
         if (operator) {
-            displayValue = `${num1} ${operator}`;
+            displayValue += ` ${operator}`;
             if (num2) {
-                displayValue = `${num1} ${operator} ${num2}`;
+                displayValue += ` ${num2}`;
             }
         }
     }
-    else {
-        displayValue = '';
-    }
+
     document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
 function clearAll() {
-    num1 = null;
-    num2 = null;
-    operator = null;
-    result = null;
+    num1 = '';
+    num2 = '';
+    operator = '';
+    result = '';
     displayValue = '';
-    smallDisplay = '';
+    smallDisplay = ''
+    num1Decimal = 'no';
+    num2Decimal = 'no';
 }
-
-// NOTE - need up update if statements from truthy to something else
-    // 0 wont work with num1 or num2 since it is technically falsy
-    // maybe and || val == 0?
-    
 
 // Updates the main display and stores the user input values of num1, num2, and operator
 function updateMain(event) {
     // If button is a number
+    let currentButton = event.target.value;
     if (event.target.classList.value == "btn number") {
         if (!operator) {
             if (!num1 || currentState == "carryOver") {
+                if (event)
                 currentState = "initial";
-                num1 = event.target.value;
-                result = null;
+                num1 = currentButton;
+                result = '';
             }
             else {
-                num1 += event.target.value;
+                num1 += currentButton;
             }
         }
         else {
             if (!num2) {
-                num2 = event.target.value
+                num2 = currentButton;
             }
             else {
-                num2 += event.target.value;
+                num2 += currentButton;
             }
         }
     }
     // If button is an executer (clear or delete)
     if (event.target.classList.value == "btn execute") {
-        if (event.target.value == "clear") {
+        if (currentButton == "clear") {
             clearAll();
         }
-        else if (event.target.value == "delete") {
+        else if (currentButton == "delete") {
             if (num2) {
                 num2 = num2.slice(0, -1);
             }
             else if (operator) {
-                operator = null;
+                operator = '';
             }
             else if (num1) {
                 num1 = num1.toString().slice(0, -1);
             }
             else {
-                num1 = null;
-                num2 = null;
-                operator = null;
+                num1 = '';
+                num2 = '';
+                operator = '';
             }
         }
     }
@@ -158,16 +158,16 @@ function updateMain(event) {
                 if (selectedOperator == "+" || selectedOperator == "-" || selectedOperator == "/" || selectedOperator == "*") {
                     result = operate(num1, num2, operator);
                     num1 = result;
-                    num2 = null;
-                    result = null;
+                    num2 = '';
+                    result = '';
                 }
                 else if (selectedOperator == "equals") {
                     console.log("sent with equal");
                     result = operate(num1, num2, operator);
                     num1 = result;
-                    num2 = null;
-                    result = null;
-                    operator = null;
+                    num2 = '';
+                    result = '';
+                    operator = '';
                 }
             }
             else {
@@ -177,6 +177,17 @@ function updateMain(event) {
                 }
             }
         }
+    }
+    // Detect if there is already a decimal in each number
+    let num1Search = num1.toString().indexOf(".");
+    let num2Search = num2.toString().indexOf(".");
+    if (num1Search !== -1) {
+        num1Decimal = "yes";
+        console.log("num1 has a decimal");
+    }
+    if (num2Search !== -1) {
+        num2Decimal = "yes";
+        console.log("num2 has a decimal");
     }
     // Call function to update the main and small displays, called every time a button is clicked
     updateDisplay();
