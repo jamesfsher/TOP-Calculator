@@ -69,11 +69,12 @@ function operate(a, b, operator) {
 function updateSmallDisplay() {
     smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
     document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
+    // TODO
     // make way to limit num of characters?
     // use flexbox instead
 }
 
-// Updates main display, reading through non null values
+// Updates main display, reading through non empty values
 function updateDisplay() {
     if (result) {
         displayValue = result.toString();
@@ -87,10 +88,12 @@ function updateDisplay() {
             }
         }
     }
-
+    // Updates main display
+    // TODO: store document.query... as its own global variable
     document.querySelector("#main-display-text").innerHTML = `${displayValue}`
 }
 
+// Clears all values
 function clearAll() {
     num1 = '';
     num2 = '';
