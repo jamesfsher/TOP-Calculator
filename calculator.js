@@ -60,7 +60,7 @@ function operate(a, b, operator) {
         return "Operator not found";
     }
     // Allow result to be stored as num1 for future calculations
-    num1 = result;
+    num1 = result.toString();
     currentState = "carryOver";
     return result;
 }
@@ -79,7 +79,7 @@ function updateDisplay() {
         displayValue = result.toString();
     }
     else {
-        displayValue = num1 || "0";
+        displayValue = num1.toString() || "0";
         if (operator) {
             displayValue += ` ${operator}`;
             if (num2) {
@@ -106,16 +106,22 @@ function clearAll() {
 function updateMain(event) {
     // If button is a number
     let currentButton = event.target.value;
-    if (event.target.classList.value == "btn number") {
+    if (event.target.classList.value === "btn number") {
         if (!operator) {
-            if (!num1 || currentState == "carryOver") {
-                if (event)
+            if (!num1 || currentState === "carryOver") {
                 currentState = "initial";
                 num1 = currentButton;
                 result = '';
             }
             else {
-                num1 += currentButton;
+                if (currentButton == '.') {
+                    if (num1Decimal == 'no') {
+                        num1 += currentButton;
+                    }
+                }
+                else {
+                    num1 += currentButton;
+                }
             }
         }
         else {
@@ -123,16 +129,23 @@ function updateMain(event) {
                 num2 = currentButton;
             }
             else {
-                num2 += currentButton;
+                if (currentButton == '.') {
+                    if (num2Decimal == 'no') {
+                        num2 += currentButton;
+                    }
+                }
+                else {
+                    num2 += currentButton;
+                }
             }
         }
     }
     // If button is an executer (clear or delete)
-    if (event.target.classList.value == "btn execute") {
+    if (event.target.classList.value === "btn execute") {
         if (currentButton == "clear") {
             clearAll();
         }
-        else if (currentButton == "delete") {
+        else if (currentButton === "delete") {
             if (num2) {
                 num2 = num2.slice(0, -1);
             }
@@ -150,21 +163,19 @@ function updateMain(event) {
         }
     }
     // If button is an operator (PEMDAS)
-    if (event.target.classList.value == "btn operator") {
+    if (event.target.classList.value === "btn operator") {
         let selectedOperator = event.target.value;
         console.log(selectedOperator);
         if (num1) {
             if (num2) {
-                if (selectedOperator == "+" || selectedOperator == "-" || selectedOperator == "/" || selectedOperator == "*") {
+                if (selectedOperator === "+" || selectedOperator === "-" || selectedOperator === "/" || selectedOperator === "*") {
                     result = operate(num1, num2, operator);
-                    num1 = result;
                     num2 = '';
                     result = '';
                 }
-                else if (selectedOperator == "equals") {
+                else if (selectedOperator === "equals") {
                     console.log("sent with equal");
                     result = operate(num1, num2, operator);
-                    num1 = result;
                     num2 = '';
                     result = '';
                     operator = '';
