@@ -67,7 +67,9 @@ function operate(a, b, operator) {
 
 // function to update the small display box
 function updateSmallDisplay() {
-    smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
+    if (result) {
+        smallDisplay = `${num1} ${operator} ${num2} = ${result}`;
+    }
     document.querySelector("#top-display-text").innerHTML = `${smallDisplay}`
     // TODO
     // make way to limit num of characters?
@@ -100,9 +102,11 @@ function clearAll() {
     operator = '';
     result = '';
     displayValue = '';
-    smallDisplay = ''
+    smallDisplay = '';
     num1Decimal = 'no';
     num2Decimal = 'no';
+    updateDisplay();
+    updateSmallDisplay();
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
@@ -173,12 +177,14 @@ function updateMain(event) {
             if (num2) {
                 if (selectedOperator === "+" || selectedOperator === "-" || selectedOperator === "/" || selectedOperator === "*") {
                     result = operate(num1, num2, operator);
+                    updateSmallDisplay();
                     num2 = '';
                     result = '';
                 }
                 else if (selectedOperator === "equals") {
                     console.log("sent with equal");
                     result = operate(num1, num2, operator);
+                    updateSmallDisplay();
                     num2 = '';
                     result = '';
                     operator = '';
@@ -205,7 +211,6 @@ function updateMain(event) {
     }
     // Call function to update the main and small displays, called every time a button is clicked
     updateDisplay();
-    updateSmallDisplay();
 }
 
 
