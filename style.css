@@ -12,16 +12,19 @@
     gap: 10px;
     justify-items: stretch;
     text-align: center;
-}
-
-.grid-item {
-    border-style: solid;
-    border-width: 1px;
+    padding: 20px;
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
 }
 
 .display-container {
     height: 50px;
     grid-column: 1 / span 4;
+    padding: 10px;
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
 }
 
 .top-display {
@@ -43,10 +46,16 @@
     margin: 0;
 }
 
-.grid-item-1 {
+#clear {
     grid-column: 1 / span 2;
 }
 
-.grid-item-2 {
+#delete {
     grid-column: 3 / span 2;
+}
+
+button {
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 10px;
 }
