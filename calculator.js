@@ -35,11 +35,28 @@ let num1Decimal = "no";
 let num2Decimal = "no";
 
 // Add event listener to all buttons, passing the event information
-const buttons = document.querySelectorAll('.btn');
-buttons.forEach(function (button) {
+const numButtons = document.querySelectorAll('.btn.number');
+numButtons.forEach(function (button) {
     button.addEventListener('click', function (e) {
-        updateMain(e);
+        numberHandler(e);
     });
+});
+
+const operatorButtons = document.querySelectorAll('.btn.operator');
+operatorButtons.forEach(function (button) {
+    button.addEventListener('click', function (e) {
+        operatorHandler(e);
+    });
+});
+
+const clearButton = document.querySelector('#clear');
+clearButton.addEventListener('click', () => {
+    clearAll()
+});
+
+const deleteButton = document.querySelector('#delete');
+deleteButton.addEventListener('click', () => {
+    deleteHandler();
 });
 
 // Operate function which takes user input values and executes operation
@@ -109,66 +126,88 @@ function clearAll() {
     updateSmallDisplay();
 }
 
-// Updates the main display and stores the user input values of num1, num2, and operator
-function updateMain(event) {
-    // If button is a number
+// Deletes most recent character from num1, operator, or num2
+function deleteHandler() {
+    // Goes through each value from last to first and detects & deletes
+    if (num2) {
+        num2 = num2.slice(0, -1);
+    }
+    else if (operator) {
+        operator = '';
+    }
+    else if (num1) {
+        num1 = num1.toString().slice(0, -1);
+    }
+    else {
+        num1 = '';
+        num2 = '';
+        operator = '';
+    }
+    // After updating values, updateDisplay called
+    updateDisplay();
+}
+
+function decimalDetector() {
+    // Detect if there is already a decimal in each number
+    let num1Search = num1.toString().indexOf(".");
+    let num2Search = num2.toString().indexOf(".");
+    if (num1Search !== -1) {
+        num1Decimal = "yes";
+        console.log("num1 has a decimal");
+    }
+    else {
+        num1Decimal = "no";
+    }
+    if (num2Search !== -1) {
+        num2Decimal = "yes";
+        console.log("num2 has a decimal");
+    }
+    else {
+        num2Decimal = "no";
+    }
+}
+
+// Handles number inputs
+function numberHandler(event) {
+    decimalDetector();
     let currentButton = event.target.value;
-    if (event.target.classList.value === "btn number") {
-        if (!operator) {
-            if (!num1 || currentState === "carryOver") {
-                currentState = "initial";
-                num1 = currentButton;
-                result = '';
-            }
-            else {
-                if (currentButton == '.') {
-                    if (num1Decimal == 'no') {
-                        num1 += currentButton;
-                    }
-                }
-                else {
+    if (!operator) {
+        if (!num1 || currentState === "carryOver") {
+            currentState = "initial";
+            num1 = currentButton;
+            result = '';
+        }
+        else {
+            if (currentButton == '.') {
+                if (num1Decimal == 'no') {
                     num1 += currentButton;
                 }
             }
+            else {
+                num1 += currentButton;
+            }
+        }
+    }
+    else {
+        if (!num2) {
+            num2 = currentButton;
         }
         else {
-            if (!num2) {
-                num2 = currentButton;
-            }
-            else {
-                if (currentButton == '.') {
-                    if (num2Decimal == 'no') {
-                        num2 += currentButton;
-                    }
-                }
-                else {
+            if (currentButton == '.') {
+                if (num2Decimal == 'no') {
                     num2 += currentButton;
                 }
             }
-        }
-    }
-    // If button is an executer (clear or delete)
-    if (event.target.classList.value === "btn execute") {
-        if (currentButton == "clear") {
-            clearAll();
-        }
-        else if (currentButton === "delete") {
-            if (num2) {
-                num2 = num2.slice(0, -1);
-            }
-            else if (operator) {
-                operator = '';
-            }
-            else if (num1) {
-                num1 = num1.toString().slice(0, -1);
-            }
             else {
-                num1 = '';
-                num2 = '';
-                operator = '';
+                num2 += currentButton;
             }
         }
     }
+    updateDisplay();
+}
+
+// Updates the main display and stores the user input values of num1, num2, and operator
+function operatorHandler(event) {
     // If button is an operator (PEMDAS)
     if (event.target.classList.value === "btn operator") {
         let selectedOperator = event.target.value;
@@ -198,34 +237,7 @@ function updateMain(event) {
             }
         }
     }
-    // Detect if there is already a decimal in each number
-    let num1Search = num1.toString().indexOf(".");
-    let num2Search = num2.toString().indexOf(".");
-    if (num1Search !== -1) {
-        num1Decimal = "yes";
-        console.log("num1 has a decimal");
-    }
-    if (num2Search !== -1) {
-        num2Decimal = "yes";
-        console.log("num2 has a decimal");
-    }
     // Call function to update the main and small displays, called every time a button is clicked
     updateDisplay();
+
 }
-
-
-
-
-// create event listeners on the numbers and operators to populate display value
-// Number has to be the first selection
-// multiple numbers can be added to each variable
-// Operator can be selected next
-// if a different operator is selected, initial option is overwritten
-// Next a string of numbers can be created again
-// if any operator is selected next, the numbers and operators previously selected are executed
-// the result of the previously operation should be moved to small display
-// the result of the past operation should then be stored as initial number
-// if user starts typing numbers, then stored past value is overwritten
-
-// General notes
-// make all fonts bigger
