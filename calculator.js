@@ -38,22 +38,58 @@ let num2Decimal = "no";
 const numButtons = document.querySelectorAll('.btn.number');
 numButtons.forEach(function (button) {
     button.addEventListener('click', function (e) {
-        numberHandler(e);
+        numberHandler(e.target.value);
     });
 });
 
+// Add eventlistener to window level DOM for keydown event
+window.addEventListener('keydown', handleKeyboardInput)
+// Function to handle keyboard inputs
+function handleKeyboardInput(e) {
+    // If keydown event is an acceptable number or decimal, send to numberHandler function
+    if ((e.key >= 0 && e.key <= 9) || e.key === ".") {
+        numberHandler(e.key);
+    }
+    // If keydown event is acceptable operator, send to operatorHandler
+    else if (e.key === "=" || e.key === "Enter" || e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+        // Pass "=" instead of enter to operator handler
+        if (e.key === "Enter") {
+            operatorHandler("=");
+        }
+        else {
+            operatorHandler(e.key);
+        }
+    }
+    // Call clear on escape key event
+    else if (e.key === "Escape") {
+        clearAll();
+    }
+    // Call delete on backspace key event
+    else if (e.key === "Backspace") {
+        console.log("backpace")
+        deleteHandler();
+    }
+    else {
+        e.preventDefault();
+    }
+}
+
+// Add event listener to operator buttons, pass the button value
 const operatorButtons = document.querySelectorAll('.btn.operator');
 operatorButtons.forEach(function (button) {
     button.addEventListener('click', function (e) {
-        operatorHandler(e);
+        operatorHandler(e.target.value);
     });
 });
 
+// Add event listener to clear button, call clearAll function
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', () => {
     clearAll()
 });
 
+
+// Add event listener on delete button, call deleteHandler function
 const deleteButton = document.querySelector('#delete');
 deleteButton.addEventListener('click', () => {
     deleteHandler();
@@ -76,6 +112,9 @@ function operate(a, b, operator) {
     else {
         return "Operator not found";
     }
+    // Update small display before updating value of num1
+    updateSmallDisplay();
+
     // Allow result to be stored as num1 for future calculations
     num1 = result.toString();
     currentState = "carryOver";
@@ -168,9 +207,8 @@ function decimalDetector() {
 }
 
 // Handles number inputs
-function numberHandler(event) {
+function numberHandler(currentButton) {
     decimalDetector();
-    let currentButton = event.target.value;
     if (!operator) {
         if (!num1 || currentState === "carryOver") {
             currentState = "initial";
@@ -207,37 +245,30 @@ function numberHandler(event) {
 }
 
 // Updates the main display and stores the user input values of num1, num2, and operator
-function operatorHandler(event) {
-    // If button is an operator (PEMDAS)
-    if (event.target.classList.value === "btn operator") {
-        let selectedOperator = event.target.value;
-        console.log(selectedOperator);
-        if (num1) {
-            if (num2) {
-                if (selectedOperator === "+" || selectedOperator === "-" || selectedOperator === "/" || selectedOperator === "*") {
-                    result = operate(num1, num2, operator);
-                    updateSmallDisplay();
-                    num2 = '';
-                    result = '';
-                }
-                else if (selectedOperator === "equals") {
-                    console.log("sent with equal");
-                    result = operate(num1, num2, operator);
-                    updateSmallDisplay();
-                    num2 = '';
-                    result = '';
-                    operator = '';
-                }
+function operatorHandler(selectedOperator) {
+    console.log(selectedOperator);
+    if (num1) {
+        if (num2) {
+            if (selectedOperator === "+" || selectedOperator === "-" || selectedOperator === "/" || selectedOperator === "*") {
+                result = operate(num1, num2, operator);
+                num2 = '';
+                result = '';
             }
-            else {
-                if (selectedOperator != "equals") {
-                    console.log("regular operator");
-                    operator = selectedOperator;
-                }
+            else if (selectedOperator === "=") {
+                console.log("sent with equal");
+                result = operate(num1, num2, operator);
+                num2 = '';
+                result = '';
+                operator = '';
+            }
+        }
+        else {
+            if (selectedOperator != "=") {
+                console.log("regular operator");
+                operator = selectedOperator;
             }
         }
     }
     // Call function to update the main and small displays, called every time a button is clicked
     updateDisplay();
-
 }

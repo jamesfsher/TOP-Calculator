@@ -59,3 +59,7 @@ button {
     border-radius: 5px;
     padding: 10px;
 }
+
+button:hover {
+    background-color: aquamarine;
+}
