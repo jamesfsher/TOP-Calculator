@@ -32,6 +32,7 @@ body {
     border: solid;
     border-width: 2px;
     border-radius: 5px;
+    overflow: auto;
 }
 
 .top-display {
