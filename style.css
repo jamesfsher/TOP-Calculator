@@ -23,6 +23,7 @@ body {
     border: solid;
     border-width: 2px;
     border-radius: 5px;
+    background-color: #090C5C;
 }
 
 .display-container {
@@ -33,6 +34,7 @@ body {
     border-width: 2px;
     border-radius: 5px;
     overflow: auto;
+    background-color: rgb(38, 95, 38);
 }
 
 .top-display {
@@ -72,6 +74,11 @@ button:hover {
     background-color: aquamarine;
 }
 
+button.operator {
+    background-color: #393fed;
+    color: white;
+}
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -82,4 +89,14 @@ button:hover {
     gap: 10px;
     width: 100%;
     font-size: 15px;
+}
+
+#clear {
+    background-color: rgb(221, 219, 102);
+    color: white;
+}
+
+#delete {
+    background-color: rgb(61, 193, 61);
+    color: white;
 }
